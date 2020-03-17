@@ -59,12 +59,17 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation "androidx.room:room-runtime:2.2.3"
-    kapt "androidx.room:room-compiler:2.2.3"
+    implementation "androidx.room:room-runtime:2.2.4"
+    kapt "androidx.room:room-compiler:2.2.4"
 
     implementation "android.arch.work:work-runtime-ktx:1.0.1"
+
+    implementation "com.squareup.okhttp3:okhttp:4.3.1"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+    implementation "com.squareup.retrofit2:converter-gson:2.5.0"
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
