@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="AsteroidData"
+            type="com.udacity.asteroidradar.data.model.Asteroid" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#161616"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/asteroid_code_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@{AsteroidData.codename}"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/asteroid_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@{AsteroidData.closeApproachDate}"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/asteroid_harzard_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            app:statusIcon="@{AsteroidData.potentiallyHazardous}" />
+
+    </RelativeLayout>
+</layout>
