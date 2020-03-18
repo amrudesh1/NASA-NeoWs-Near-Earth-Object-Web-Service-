@@ -25,6 +25,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val uiScope = CoroutineScope(Dispatchers.Main + mainViewModelJob)
     val databaseService: DatabaseService = DatabaseService.getInstance(application)
     val imageOfDay = MutableLiveData<PictureOfDay>()
+    val startDate =
+            SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis()))
+    val endDate =
+            SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis() + 604800000L))
 
     init {
         initData()
@@ -42,7 +46,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         imagefortheDayMap["api_key"] = "JebcLPzxmR30MxO6zWCGbGWiaNeTOIZCSGkkOCZ8"
         GlobalScope.launch {
             val imageObject =
-                RetrofitInstance.appAPIWithMoshi.getImageForTheDay(imagefortheDayMap).await()
+                    RetrofitInstance.appAPIWithMoshi.getImageForTheDay(imagefortheDayMap).await()
             setImagedata(imageObject)
         }
     }
@@ -56,20 +60,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private suspend fun setDataforAsteroid() {
         val startDate =
-            SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis()))
+                SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis()))
         val endDate =
-            SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis() + 604800000L))
+                SimpleDateFormat("yyyy-MM-dd").format(Date(System.currentTimeMillis() + 604800000L))
 
 
         val asteroidMap: MutableMap<String, String> =
-            HashMap()
+                HashMap()
         asteroidMap["start_date"] = startDate
         asteroidMap["end_date"] = endDate
         asteroidMap["api_key"] = "JebcLPzxmR30MxO6zWCGbGWiaNeTOIZCSGkkOCZ8"
         GlobalScope.launch()
         {
             val dataObject =
-                JSONObject(RetrofitInstance.appAPIWithScalar.getAsteroids(asteroidMap).await())
+                    JSONObject(RetrofitInstance.appAPIWithScalar.getAsteroids(asteroidMap).await())
             Log.i("Data", NetworkUtils.parseAsteroidsJsonResult(dataObject).size.toString())
             setLiveDataValueToDB(NetworkUtils.parseAsteroidsJsonResult(dataObject))
         }
@@ -95,7 +99,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun getAsteroidsfromDb(): List<Asteroid> {
         return withContext(Dispatchers.IO)
         {
-            val data = databaseService.asteroidDao.getAllAsteroidData()
+            val data = databaseService.asteroidDao.getAllAsteroidData(startDate, endDate)
             data
         }
     }
