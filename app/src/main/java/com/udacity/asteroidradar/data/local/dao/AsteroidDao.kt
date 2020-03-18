@@ -9,6 +9,6 @@ interface AsteroidDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAsteroidData(list: List<Asteroid>)
 
-    @Query("SELECT * FROM ASTEROID")
-    fun getAllAsteroidData(): List<Asteroid>
+    @Query("SELECT * FROM ASTEROID WHERE  closeApproachDate BETWEEN :dayst AND :dayen ORDER BY closeApproachDate ASC")
+    fun getAllAsteroidData(dayst: String, dayen: String): List<Asteroid>
 }
