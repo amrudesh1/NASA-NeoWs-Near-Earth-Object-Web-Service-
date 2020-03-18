@@ -7,8 +7,8 @@ import com.udacity.asteroidradar.data.model.Asteroid
 @Dao
 interface AsteroidDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAsteroidData(list: ArrayList<Asteroid>)
+    fun insertAsteroidData(list: List<Asteroid>)
 
     @Query("SELECT * FROM ASTEROID")
-    fun getAllAsteroidData(): LiveData<List<Asteroid>>
+    fun getAllAsteroidData(): List<Asteroid>
 }

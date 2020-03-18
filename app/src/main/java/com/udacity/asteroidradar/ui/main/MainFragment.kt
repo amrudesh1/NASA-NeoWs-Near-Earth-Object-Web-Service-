@@ -7,6 +7,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -16,24 +19,35 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.statusLoadingWheel.visibility = View.VISIBLE
+
+        val adapter = AsteroidAdapter()
+        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.asteroidRecycler.layoutManager = layoutManager
+
+
         viewModel.getAsteriodData().observe(viewLifecycleOwner, Observer {
             binding.statusLoadingWheel.visibility = View.GONE
-            Log.i("VisibilityData", it!!.size.toString())
+            it.let {
+                adapter.data = it
+                adapter.notifyDataSetChanged()
+            }
         })
-
-
+        viewModel.imageOfDay.observe(viewLifecycleOwner, Observer {
+            it.let {
+                Picasso.get().load(it.url).into(binding.activityMainImageOfTheDay)
+            }
+        })
+        binding.asteroidRecycler.adapter = adapter
 
 
         binding.viewModel = viewModel
-
-
-
-
         setHasOptionsMenu(true)
         return binding.root
     }
