@@ -19,12 +19,16 @@ class MainFragment : Fragment() {
     lateinit var adapter: AsteroidAdapter
     lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        val activity = requireNotNull(this.activity)
+        ViewModelProvider(
+            this,
+            MainViewModel.Factory(activity.application)
+        ).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         binding.lifecycleOwner = this
@@ -58,7 +62,7 @@ class MainFragment : Fragment() {
         binding.asteroidRecycler.layoutManager = layoutManager
 
 
-        viewModel.getAsteriodData().observe(viewLifecycleOwner, Observer {
+        viewModel.asteroids.observe(viewLifecycleOwner, Observer {
             binding.statusLoadingWheel.visibility = View.GONE
             it.let {
                 adapter.data = it
@@ -73,9 +77,9 @@ class MainFragment : Fragment() {
                 binding.picture = it
             }
         })
+
+
         binding.asteroidRecycler.adapter = adapter
-
-
         binding.viewModel = viewModel
 
 
